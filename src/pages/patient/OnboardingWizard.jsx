@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppShell from '../../components/layout/AppShell';
 import { getRole } from '../../data/roles';
 import Card from '../../components/ui/Card';
-import { onboardingSteps } from '../../data/mockData';
+import { onboardingSteps, fetchPatientProfile, saveOnboardingStep } from '../../data/api';
 
 const STEP_CONTENT = {
   welcome: {
@@ -88,8 +88,29 @@ const STEP_CONTENT = {
 
 export default function OnboardingWizard() {
   const role = getRole('patient');
-  const [stepIdx, setStepIdx] = useState(3); // matches patientProfile.onboardingStep - 1
+  const [stepIdx, setStepIdx] = useState(0);
+  const [saving, setSaving] = useState(false);
   const step = onboardingSteps[stepIdx];
+
+  // Load live patient profile; set the current step from the DB.
+  useEffect(() => {
+    fetchPatientProfile()
+      .then((p) => setStepIdx(Math.max(0, (p.onboardingStep ?? 1) - 1)))
+      .catch((err) => console.error('[onboarding] load failed', err));
+  }, []);
+
+  // WRITE PATH: persist the current step, then advance.
+  async function handleContinue() {
+    setSaving(true);
+    try {
+      await saveOnboardingStep(step.key);
+      setStepIdx((i) => Math.min(onboardingSteps.length - 1, i + 1));
+    } catch (err) {
+      console.error('[onboarding] save failed', err);
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <AppShell role={role} title="Onboarding" sub="6-step patient intake">
@@ -119,7 +140,8 @@ export default function OnboardingWizard() {
           </button>
           <button
             className="btn btn-primary"
-            onClick={() => setStepIdx((i) => Math.min(onboardingSteps.length - 1, i + 1))}
+                                onClick={handleContinue}
+                      disabled={saving}
           >
             {stepIdx === onboardingSteps.length - 1 ? 'Finish & submit' : 'Continue'} →
           </button>
