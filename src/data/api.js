@@ -34,7 +34,7 @@ export async function fetchPatientProfile() {
   if (!user) throw new Error('Not authenticated');
   const { data, error } = await supabase
     .from('patients')
-    .select('name, id_number, referral_source, application_ref, onboarding_step, status')
+          .select('name, id_number, referral_source, application_ref, onboarding_step, status, id_type, title, first_name, last_name, date_of_birth, sex, mobile, email, consent_id_autoread, consent_id_autoread_at')
     .eq('user_id', user.id)
     .single();
   if (error) throw error;
@@ -45,6 +45,16 @@ export async function fetchPatientProfile() {
     applicationRef: data.application_ref,
     onboardingStep: data.onboarding_step,
     status: data.status,
+    idType: data.id_type,
+    title: data.title,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    dateOfBirth: data.date_of_birth,
+    sex: data.sex,
+    mobile: data.mobile,
+    email: data.email,
+    consentIdAutoread: data.consent_id_autoread,
+    consentIdAutoreadAt: data.consent_id_autoread_at,
   };
 }
 
