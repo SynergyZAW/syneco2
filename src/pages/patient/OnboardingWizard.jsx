@@ -8,7 +8,7 @@ import { onboardingSteps, fetchPatientProfile, saveOnboardingStep } from '../../
 // to the patients table columns (e.g. referralSource -> referral_source).
 const STEP_FIELDS = {
   welcome: ['referralSource'],
-  basic: ['name', 'idNumber', 'mobile', 'email'],
+    basic: ['idType', 'title', 'firstName', 'lastName', 'name', 'idNumber', 'dateOfBirth', 'sex', 'mobile', 'email'],
   identity: [],
   clinical: ['clinicalReason', 'clinicalDuration', 'clinicalCurrent', 'clinicalNotes'],
   consent: [],
@@ -29,6 +29,12 @@ const STEP_CONTENT = {
   ),
   basic: (d, set) => (
     <div className="field-row">
+      <div className="field"><label>ID type</label><select value={d.idType || 'sa_id'} onChange={(e) => set('idType', e.target.value)}><option value="sa_id">South African ID</option><option value="passport">Passport</option></select></div>
+      <div className="field"><label>Title</label><select value={d.title || ''} onChange={(e) => set('title', e.target.value)}><option value="">Select</option><option>Mr</option><option>Ms</option><option>Mrs</option><option>Miss</option><option>Dr</option><option>Prof</option><option>Other</option></select></div>
+      <div className="field"><label>First name</label><input placeholder="Chloe" value={d.firstName || ''} onChange={(e) => set('firstName', e.target.value)} /></div>
+      <div className="field"><label>Last name</label><input placeholder="Pretorius" value={d.lastName || ''} onChange={(e) => set('lastName', e.target.value)} /></div>
+      <div className="field"><label>Date of birth</label><input type="date" value={d.dateOfBirth || ''} onChange={(e) => set('dateOfBirth', e.target.value)} /></div>
+      <div className="field"><label>Sex</label><select value={d.sex || ''} onChange={(e) => set('sex', e.target.value)}><option value="">Select</option><option value="female">Female</option><option value="male">Male</option></select></div>
       <div className="field"><label>Full name</label><input placeholder="Chloe Pretorius" value={d.name || ''} onChange={(e) => set('name', e.target.value)} /></div>
       <div className="field"><label>ID number</label><input placeholder="9403215800083" value={d.idNumber || ''} onChange={(e) => set('idNumber', e.target.value)} /></div>
       <div className="field"><label>Mobile number</label><input placeholder="082 000 0000" value={d.mobile || ''} onChange={(e) => set('mobile', e.target.value)} /></div>
