@@ -1,0 +1,122 @@
+// Central role registry — drives sidebar nav, topbar role switcher, and routing.
+// To add a new role: add an entry here, then add matching routes in App.jsx.
+
+export const ROLES = [
+  {
+    id: 'patient',
+    label: 'Patient',
+    person: 'Chloe Pretorius',
+    tagline: 'Onboarding, card & store',
+    base: '/patient',
+    nav: [
+      { label: 'Dashboard', to: '/patient' },
+      { label: 'Onboarding', to: '/patient/onboarding' },
+      { label: 'Regulatory Status', to: '/patient/status' },
+      { label: 'Digital Card', to: '/patient/card' },
+      { label: 'Medicine Shop', to: '/patient/shop' },
+      { label: 'Support Center', to: '/patient/support' },
+      { label: 'Profile', to: '/patient/profile' },
+    ],
+  },
+  {
+    id: 'doctor',
+    label: 'Doctor',
+    person: 'Dr. Sarah Adams',
+    tagline: 'MD-449193-21',
+    base: '/doctor',
+    nav: [
+      { label: 'Clinical Intake Queue', to: '/doctor' },
+      { label: 'Weekly Planner', to: '/doctor/planner' },
+      { label: 'Secure Messaging', to: '/doctor/messaging' },
+      { label: 'Workload Reports', to: '/doctor/reports' },
+    ],
+  },
+  {
+    id: 'admin',
+    label: 'Admin',
+    person: 'Jon — Group Admin',
+    tagline: 'Group operations',
+    base: '/admin',
+    nav: [
+      { label: 'Overview', to: '/admin' },
+      { label: 'Patient Care', to: '/admin/department/patient-care' },
+      { label: 'Finance', to: '/admin/department/finance' },
+      { label: 'IT', to: '/admin/department/it' },
+      { label: 'Compliance', to: '/admin/department/compliance' },
+      { label: 'Operations', to: '/admin/department/operations' },
+      { label: 'Asset Management', to: '/admin/department/assets' },
+      { label: 'Executive Reporting', to: '/admin/department/executive' },
+      { label: 'Referrals & Tenants', to: '/admin/referrals' },
+      { label: 'Users & Permissions', to: '/admin/users' },
+      { label: 'Audit Log', to: '/admin/audit' },
+    ],
+  },
+  {
+    id: 'superadmin',
+    label: 'Super Admin',
+    person: 'Jon — Super Admin',
+    tagline: 'Full ecosystem control',
+    base: '/super-admin',
+    nav: [
+      { label: 'Overview', to: '/super-admin' },
+      { label: 'Patient Care', to: '/super-admin/department/patient-care' },
+      { label: 'Finance', to: '/super-admin/department/finance' },
+      { label: 'IT', to: '/super-admin/department/it' },
+      { label: 'Compliance', to: '/super-admin/department/compliance' },
+      { label: 'Operations', to: '/super-admin/department/operations' },
+      { label: 'Asset Management', to: '/super-admin/department/assets' },
+      { label: 'Executive Reporting', to: '/super-admin/department/executive' },
+      { label: 'Referrals & Tenants', to: '/super-admin/referrals' },
+      { label: 'Users & Permissions', to: '/super-admin/users' },
+      { label: 'Audit Log', to: '/super-admin/audit' },
+    ],
+  },
+  {
+    id: 'pharmacy',
+    label: 'Pharmacy',
+    person: 'Crowpharm Dispensary',
+    tagline: 'Johannesburg Dispensing Facility',
+    base: '/pharmacy',
+    nav: [
+      { label: 'Dispensary Orders', to: '/pharmacy' },
+      { label: 'Compliance Analytics', to: '/pharmacy/compliance' },
+      { label: 'Fulfilment Reporting', to: '/pharmacy/reports' },
+    ],
+  },
+  {
+    id: 'reseller',
+    label: 'Reseller',
+    person: 'Agency Management Co.',
+    tagline: 'Collection-point tenancy',
+    base: '/reseller',
+    nav: [
+      { label: 'Portfolio', to: '/reseller' },
+      { label: 'Billing & Fees', to: '/reseller/billing' },
+      { label: 'Reporting', to: '/reseller/reports' },
+    ],
+  },
+  {
+    id: 'partner',
+    label: 'Partner',
+    person: 'Onboarding Partner',
+    tagline: 'Operational workspace',
+    base: '/partner',
+    nav: [
+      { label: 'Workspace', to: '/partner' },
+      { label: 'Referral Tools', to: '/partner/referrals' },
+    ],
+  },
+  {
+    id: 'collectionpoint',
+    label: 'Collection Point',
+    person: 'Eco-Cann Clinic',
+    tagline: 'Strategic Network ID #5',
+    base: '/collection-point',
+    nav: [
+      { label: 'Executive Console', to: '/collection-point' },
+      { label: 'Attributed Patients', to: '/collection-point/patients' },
+    ],
+  },
+];
+
+export const getRole = (id) => ROLES.find((r) => r.id === id) || ROLES[0];
