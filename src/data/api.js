@@ -73,9 +73,16 @@ export async function saveOnboardingStep(stepKey, fields = {}) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Not authenticated');
   const stepIndex = onboardingSteps.findIndex((s) => s.key === stepKey);
+  const now = new Date().toISOString();
+  const consentStamps = stepKey === 'consent' ? {
+    consent_treatment_at: fields.consentTreatment ? now : null,
+    consent_popia_at: fields.consentPopia ? now : null,
+    consent_telehealth_at: fields.consentTelehealth ? now : null,
+    consent_cpa_ack_at: fields.consentCpaAck ? now : null,
+    } : {};
   const { data, error } = await supabase
     .from('patients')
-    .update({ ...toSnake(fields), onboarding_step: stepIndex })
+    .update({ ...toSnake(fields), ...consentStamps, onboarding_step: stepIndex })
     .eq('user_id', user.id)
     .select()
     .single();
