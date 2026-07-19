@@ -11,7 +11,7 @@ const STEP_FIELDS = {
     basic: ['idType', 'title', 'firstName', 'lastName', 'name', 'idNumber', 'dateOfBirth', 'sex', 'mobile', 'email'],
   identity: [],
   clinical: ['clinicalReason', 'clinicalDuration', 'clinicalCurrent', 'clinicalNotes'],
-  consent: [],
+    consent: ['consentTreatment', 'consentPopia', 'consentTelehealth', 'consentCpaAck'],
   payment: ['voucherCode', 'paymentMethod'],
 };
 
@@ -64,23 +64,27 @@ const STEP_CONTENT = {
       <div className="field"><label>Any other conditions we should know about?</label><textarea rows={3} placeholder="Mild generalised anxiety, managed" value={d.clinicalNotes || ''} onChange={(e) => set('clinicalNotes', e.target.value)} /></div>
     </div>
   ),
-  consent: () => (
-    <div>
-      <p className="text-secondary mt-4">Please review and accept the following before continuing:</p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 14 }}>
-        {[
-          'I understand this medicine is unregistered in South Africa.',
-          'I understand SAHPRA approval is required before supply.',
-          'I authorize Synergy to prepare and submit my Section 21 application.',
-          'I consent to processing of my personal and special personal information.',
-        ].map((t) => (
-          <label key={t} style={{ display: 'flex', gap: 10, fontSize: 13, alignItems: 'flex-start' }}>
-            <input type="checkbox" style={{ marginTop: 3 }} />{t}
-          </label>
-        ))}
+  consent: (d, set) => (
+      <div>
+        <p className="text-secondary mt-4">Tap each item to read the full wording. The treatment consent is the one SAHPRA requires for your Section 21 application.</p>
+        <label className="field" style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 14 }}>
+          <input type="checkbox" checked={!!d.consentTreatment} onChange={(e) => set('consentTreatment', e.target.checked)} />
+          <span><strong>Treatment (SAHPRA Section 21).</strong> I agree to be treated with Medical Cannabis, an unregistered medicine, under a Section 21 application.</span>
+        </label>
+        <label className="field" style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 10 }}>
+          <input type="checkbox" checked={!!d.consentPopia} onChange={(e) => set('consentPopia', e.target.checked)} />
+          <span><strong>POPIA.</strong> I consent to Synergy processing my personal and health information for the purpose of my care.</span>
+        </label>
+        <label className="field" style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 10 }}>
+          <input type="checkbox" checked={!!d.consentTelehealth} onChange={(e) => set('consentTelehealth', e.target.checked)} />
+          <span><strong>Telehealth.</strong> I understand my consultation will take place remotely and I consent to telehealth care.</span>
+        </label>
+        <label className="field" style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 10 }}>
+          <input type="checkbox" checked={!!d.consentCpaAck} onChange={(e) => set('consentCpaAck', e.target.checked)} />
+          <span><strong>CPA acknowledgement.</strong> I understand that prescription scheduled medicines are excluded from the Consumer Protection Act cooling-off / return rights for public-health reasons.</span>
+        </label>
       </div>
-    </div>
-  ),
+    ),
   payment: (d, set) => (
     <div>
       <div className="card" style={{ background: 'var(--surface-sunken)', marginBottom: 16 }}>
